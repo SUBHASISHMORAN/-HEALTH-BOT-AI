@@ -16,6 +16,7 @@ import {
   Search
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 interface Conversation {
   id: string;
@@ -275,7 +276,7 @@ export default function Sidebar({
         )}
 
         {/* Settings */}
-        <div className="p-4 border-t border-[hsl(var(--sidebar-border))]">
+        <div className="p-4 border-t border-[hsl(var(--sidebar-border))] space-y-2">
           <Button
             variant="ghost"
             onClick={onOpenSettings}
@@ -288,6 +289,9 @@ export default function Sidebar({
             <Settings className="h-4 w-4" />
             {isHovering && t('sidebar.settings')}
           </Button>
+          
+          {/* Theme Toggle */}
+          <ThemeToggle isHovering={isHovering} />
         </div>
       </div>
 

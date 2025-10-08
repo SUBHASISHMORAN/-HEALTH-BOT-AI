@@ -6,7 +6,8 @@
     "searchPlaceholder": "बातचीत खोजें...",
     "noConversationsFound": "कोई बातचीत नहीं मिली",
     "tryDifferentSearch": "अलग खोज शब्द आज़माएं",
-    "settings": "सेटिंग्स"
+    "settings": "सेटिंग्स",
+    "theme": "थीम"
   },
   "chat": {
     "title": "ChatGPT",
@@ -51,5 +52,10 @@
   "languages": {
     "en": "English",
     "hi": "हिन्दी"
+  },
+  "theme": {
+    "light": "हल्का",
+    "dark": "गहरा",
+    "system": "सिस्टम"
   }
 }

@@ -6,7 +6,8 @@
     "searchPlaceholder": "Search conversations...",
     "noConversationsFound": "No conversations found",
     "tryDifferentSearch": "Try a different search term",
-    "settings": "Settings"
+    "settings": "Settings",
+    "theme": "Theme"
   },
   "chat": {
     "title": "ChatGPT",
@@ -51,5 +52,10 @@
   "languages": {
     "en": "English",
     "hi": "हिन्दी"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
   }
 }
