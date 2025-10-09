@@ -8,19 +8,21 @@ import NotFound from "./pages/NotFound";
 import SidebarLayout from "./components/SidebarLayout";
 import { ChatProvider, useChat } from "./contexts/ChatContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import Auth from "./pages/Auth";
+import OTPVerification from "./pages/Otp";
 
 const queryClient = new QueryClient();
 
 function AppContent() {
-  const { 
-    conversations, 
-    activeConversationId, 
-    isCollapsed, 
-    setIsCollapsed, 
-    addConversation, 
+  const {
+    conversations,
+    activeConversationId,
+    isCollapsed,
+    setIsCollapsed,
+    addConversation,
     setActiveConversationId,
     deleteConversation,
-    updateConversation
+    updateConversation,
   } = useChat();
 
   const handleNewChat = () => {
@@ -29,7 +31,7 @@ function AppContent() {
       id: newId,
       title: "New Chat",
       timestamp: "Just now",
-      messages: []
+      messages: [],
     };
     addConversation(newConversation);
     setActiveConversationId(newId);
@@ -40,10 +42,10 @@ function AppContent() {
   };
 
   return (
-    <SidebarLayout 
-      isCollapsed={isCollapsed} 
-      onToggleCollapse={() => setIsCollapsed(!isCollapsed)} 
-      onNewChat={handleNewChat} 
+    <SidebarLayout
+      isCollapsed={isCollapsed}
+      onToggleCollapse={() => setIsCollapsed(!isCollapsed)}
+      onNewChat={handleNewChat}
       onOpenSettings={() => {}}
       conversations={conversations}
       activeConversationId={activeConversationId}
@@ -67,6 +69,8 @@ const App = () => {
               <Sonner />
               <Routes>
                 <Route path="/" element={<AppContent />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/verify" element={<OTPVerification />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>

@@ -109,7 +109,7 @@ export default function Sidebar({
       {/* Sidebar */}
       <div
         className={cn(
-          "fixed top-0 left-0 h-full bg-[hsl(var(--sidebar-background))] text-[hsl(var(--sidebar-foreground))] shadow-2xl border-r border-[hsl(var(--sidebar-border))] transform transition-transform transition-colors duration-300 ease-in-out z-20",
+          "fixed top-0 left-0 h-full bg-[hsl(var(--sidebar-background))] text-[hsl(var(--sidebar-foreground))]  border-r border-[hsl(var(--sidebar-border))] transform transition-transform transition-colors duration-300 ease-in-out z-20",
           sidebarWidth,
           sidebarTranslate,
           !isMobile && "translate-x-0",
