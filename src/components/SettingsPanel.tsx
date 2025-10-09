@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
@@ -12,17 +18,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { 
-  Settings, 
-  Moon, 
-  Sun, 
-  Monitor, 
-  ArrowUpDown, 
-  Globe, 
-  MapPin, 
+import {
+  Settings,
+  Moon,
+  Sun,
+  Monitor,
+  ArrowUpDown,
+  Globe,
+  MapPin,
   Bell,
   Mic,
-  Volume2
+  Volume2,
 } from "lucide-react";
 
 interface SettingsPanelProps {
@@ -42,7 +48,10 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div
+      className="fixed inset-0 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      style={{ background: "hsl(var(--foreground) / 0.5)" }}
+    >
       <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-card border-border">
         <CardHeader className="sticky top-0 bg-card border-b border-border">
           <div className="flex items-center justify-between">
@@ -54,11 +63,9 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
               ×
             </Button>
           </div>
-          <CardDescription>
-            Customize your ChatGPT experience
-          </CardDescription>
+          <CardDescription>Customize your ChatGPT experience</CardDescription>
         </CardHeader>
-        
+
         <CardContent className="space-y-6 p-6">
           {/* Chat Preferences */}
           <div className="space-y-4">
@@ -66,7 +73,7 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
               <ArrowUpDown className="h-4 w-4" />
               Chat Preferences
             </h3>
-            
+
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
                 <Label htmlFor="reverse-chat">Latest Message First</Label>
@@ -90,7 +97,7 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
               <Moon className="h-4 w-4" />
               Appearance
             </h3>
-            
+
             <div className="space-y-2">
               <Label>Theme</Label>
               <Select value={theme} onValueChange={setTheme}>
@@ -120,7 +127,9 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                     <div className="flex items-center gap-2">
                       <Moon className="h-4 w-4" />
                       OLED
-                      <Badge variant="secondary" className="ml-1 text-xs">New</Badge>
+                      <Badge variant="secondary" className="ml-1 text-xs">
+                        New
+                      </Badge>
                     </div>
                   </SelectItem>
                 </SelectContent>
@@ -136,7 +145,7 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
               <Globe className="h-4 w-4" />
               Language & Region
             </h3>
-            
+
             <div className="space-y-2">
               <Label>Interface Language</Label>
               <Select value={language} onValueChange={setLanguage}>
@@ -162,7 +171,7 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
               <MapPin className="h-4 w-4" />
               Privacy & Location
             </h3>
-            
+
             <div className="space-y-2">
               <Label>Location Access</Label>
               <Select value={locationAccess} onValueChange={setLocationAccess}>
@@ -189,7 +198,7 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
               <Bell className="h-4 w-4" />
               Notifications
             </h3>
-            
+
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
                 <Label htmlFor="notifications">Push Notifications</Label>
@@ -213,7 +222,7 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
               <Mic className="h-4 w-4" />
               Voice & Audio
             </h3>
-            
+
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
                 <Label htmlFor="voice-input">Voice Input</Label>
@@ -227,7 +236,7 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                 onCheckedChange={setVoiceInput}
               />
             </div>
-            
+
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
                 <Label htmlFor="autoplay">Auto-play Responses</Label>
