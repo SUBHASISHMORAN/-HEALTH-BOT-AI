@@ -11,10 +11,10 @@ interface ThemeToggleProps {
 export function ThemeToggle({ isHovering }: ThemeToggleProps) {
   const { theme, setTheme, actualTheme } = useTheme();
   const { t } = useTranslation();
-  const isDark = actualTheme === 'dark';
+  const isDark = actualTheme === "dark";
 
   const handleToggle = () => {
-    setTheme(isDark ? 'light' : 'dark');
+    setTheme(isDark ? "light" : "dark");
   };
 
   return (
@@ -26,10 +26,10 @@ export function ThemeToggle({ isHovering }: ThemeToggleProps) {
       )}
       size="sm"
       onClick={handleToggle}
-      aria-label={isDark ? t('theme.light') : t('theme.dark')}
+      aria-label={isDark ? t("theme.light") : t("theme.dark")}
     >
       {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-      {isHovering && (isDark ? t('theme.light') : t('theme.dark'))}
+      {isHovering && (isDark ? t("theme.light") : t("theme.dark"))}
     </Button>
   );
 }
