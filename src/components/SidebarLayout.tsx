@@ -14,7 +14,12 @@ import {
   Trash2,
   Edit3,
   Search,
+  BarChart2,
+  Activity,
+  Newspaper,
+  Bell,
 } from "lucide-react";
+import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
@@ -65,7 +70,7 @@ export default function Sidebar({
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
-
+  // #181B20
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -93,7 +98,7 @@ export default function Sidebar({
   );
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex h-screen  bg-background">
       {/* Mobile Menu Button */}
       {isMobile && (
         <Button
@@ -109,7 +114,7 @@ export default function Sidebar({
       {/* Sidebar */}
       <div
         className={cn(
-          "fixed top-0 left-0 h-full bg-[hsl(var(--sidebar-background))] text-[hsl(var(--sidebar-foreground))]  border-r border-[hsl(var(--sidebar-border))] transform transition-transform transition-colors duration-300 ease-in-out z-20",
+          "fixed top-0 left-0 h-full bg-background text-[hsl(var(--sidebar-foreground))]  border-[hsl(var(--sidebar-border))] transform transition-colors duration-300 ease-in-out z-20 bg-[#181B20]",
           sidebarWidth,
           sidebarTranslate,
           !isMobile && "translate-x-0",
@@ -130,22 +135,7 @@ export default function Sidebar({
         }}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-[hsl(var(--sidebar-border))]">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary to-[hsl(var(--primary-glow))] rounded-lg flex items-center justify-center">
-              <MessageSquare className="h-4 w-4 text-primary-foreground" />
-            </div>
-            {isHovering && (
-              <div>
-                <span className="font-semibold text-lg">
-                  {t("sidebar.title")}
-                </span>
-                <p className="text-xs text-muted-foreground">
-                  {t("sidebar.subtitle")}
-                </p>
-              </div>
-            )}
-          </div>
+        <div className="flex items-center justify-between p-4  border-[hsl(var(--sidebar-border))]">
           <div className="flex items-center gap-1">
             {isMobile && (
               <Button
@@ -175,133 +165,8 @@ export default function Sidebar({
           </Button>
         </div>
 
-        {/* Search */}
-        {conversations.length > 0 && isHovering && (
-          <div className="px-4 pb-2">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder={t("sidebar.searchPlaceholder")}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 h-9 text-sm"
-              />
-            </div>
-          </div>
-        )}
-
-        {/* Conversations List */}
-        {conversations.length > 0 && (
-          <>
-            {isHovering && <Separator className="mx-4" />}
-            <div className="flex-1 overflow-hidden">
-              <ScrollArea className="h-full">
-                <div className="p-2 space-y-1">
-                  {filteredConversations.length > 0
-                    ? filteredConversations.map((conversation) => (
-                        <div
-                          key={conversation.id}
-                          className={cn(
-                            "group relative flex items-center rounded-lg cursor-pointer transition-colors transition-shadow duration-200 hover:bg-[hsl(var(--sidebar-accent))] hover:shadow-sm",
-                            conversation.id === activeConversationId &&
-                              "bg-[hsl(var(--sidebar-accent))] text-[hsl(var(--sidebar-accent-foreground))] shadow-sm",
-                            isHovering
-                              ? "gap-3 p-3"
-                              : "gap-2 p-2 justify-center"
-                          )}
-                          onClick={() => {
-                            onSelectConversation?.(conversation.id);
-                            if (isMobile) setIsOpen(false);
-                          }}
-                        >
-                          <div className="flex-shrink-0">
-                            <div
-                              className={cn(
-                                "rounded-lg flex items-center justify-center transition-colors",
-                                conversation.id === activeConversationId
-                                  ? "bg-primary text-primary-foreground"
-                                  : "bg-muted text-muted-foreground group-hover:bg-primary/10",
-                                isHovering ? "w-8 h-8" : "w-6 h-6"
-                              )}
-                            >
-                              <MessageSquare
-                                className={cn(
-                                  "text-muted-foreground",
-                                  isHovering ? "h-4 w-4" : "h-3 w-3"
-                                )}
-                              />
-                            </div>
-                          </div>
-                          {isHovering && (
-                            <>
-                              <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium truncate mb-1">
-                                  {conversation.title}
-                                </p>
-                                <div className="flex items-center justify-between">
-                                  <p className="text-xs text-muted-foreground">
-                                    {conversation.timestamp}
-                                  </p>
-                                  {conversation.messages.length > 0 && (
-                                    <Badge
-                                      variant="secondary"
-                                      className="text-xs px-1.5 py-0.5"
-                                    >
-                                      {conversation.messages.length}
-                                    </Badge>
-                                  )}
-                                </div>
-                              </div>
-                              <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="h-7 w-7 p-0 hover:bg-background/50"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    onRenameConversation?.(
-                                      conversation.id,
-                                      conversation.title
-                                    );
-                                  }}
-                                >
-                                  <Edit3 className="h-3 w-3" />
-                                </Button>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="h-7 w-7 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    onDeleteConversation?.(conversation.id);
-                                  }}
-                                >
-                                  <Trash2 className="h-3 w-3" />
-                                </Button>
-                              </div>
-                            </>
-                          )}
-                        </div>
-                      ))
-                    : isHovering && (
-                        <div className="flex flex-col items-center justify-center py-8 text-center">
-                          <Search className="h-8 w-8 text-muted-foreground mb-2" />
-                          <p className="text-sm text-muted-foreground">
-                            {t("sidebar.noConversationsFound")}
-                          </p>
-                          <p className="text-xs text-muted-foreground mt-1">
-                            {t("sidebar.tryDifferentSearch")}
-                          </p>
-                        </div>
-                      )}
-                </div>
-              </ScrollArea>
-            </div>
-          </>
-        )}
-
         {/* Settings */}
-        <div className="p-4 border-t border-[hsl(var(--sidebar-border))] space-y-2">
+        <div className="p-4  border-[hsl(var(--sidebar-border))] space-y-2">
           <Button
             variant="ghost"
             onClick={onOpenSettings}
@@ -314,6 +179,99 @@ export default function Sidebar({
             <Settings className="h-4 w-4" />
             {isHovering && t("sidebar.settings")}
           </Button>
+
+          <div className="space-y-2">
+            <NavLink
+              to="/health"
+              className={({ isActive }) =>
+                cn(
+                  "w-full block rounded",
+                  isHovering ? "" : "text-center",
+                  isActive
+                    ? "bg-[hsl(var(--sidebar-accent))] text-[hsl(var(--sidebar-accent-foreground))]"
+                    : ""
+                )
+              }
+            >
+              <Button
+                variant="ghost"
+                className={cn(
+                  "w-full",
+                  isHovering ? "justify-start gap-2" : "justify-center"
+                )}
+                size="sm"
+                aria-label={isHovering ? "Health Dashboard" : "Health"}
+              >
+                <MessageSquare className="h-4 w-4" />
+                {isHovering && <span>Health Dashboard</span>}
+              </Button>
+            </NavLink>
+
+            <div className="mt-2">
+              <NavLink
+                to="/dashboard/overview"
+                className={({ isActive }) => (isActive ? "block" : "block")}
+              >
+                <Button
+                  variant="ghost"
+                  className={cn(
+                    "w-full",
+                    isHovering ? "justify-start gap-2" : "justify-center"
+                  )}
+                  size="sm"
+                  aria-label={isHovering ? "Overview" : "Overview"}
+                >
+                  <BarChart2 className="h-4 w-4" />
+                  {isHovering && <span>Overview</span>}
+                </Button>
+              </NavLink>
+
+              <NavLink to="/dashboard/analytics">
+                <Button
+                  variant="ghost"
+                  className={cn(
+                    "w-full mt-1",
+                    isHovering ? "justify-start gap-2" : "justify-center"
+                  )}
+                  size="sm"
+                  aria-label={isHovering ? "Analytics" : "Analytics"}
+                >
+                  <Activity className="h-4 w-4" />
+                  {isHovering && <span>Analytics</span>}
+                </Button>
+              </NavLink>
+
+              <NavLink to="/dashboard/news">
+                <Button
+                  variant="ghost"
+                  className={cn(
+                    "w-full mt-1",
+                    isHovering ? "justify-start gap-2" : "justify-center"
+                  )}
+                  size="sm"
+                  aria-label={isHovering ? "News" : "News"}
+                >
+                  <Newspaper className="h-4 w-4" />
+                  {isHovering && <span>News</span>}
+                </Button>
+              </NavLink>
+
+              <NavLink to="/dashboard/alerts">
+                <Button
+                  variant="ghost"
+                  className={cn(
+                    "w-full mt-1",
+                    isHovering ? "justify-start gap-2" : "justify-center"
+                  )}
+                  size="sm"
+                  aria-label={isHovering ? "Alerts" : "Alerts"}
+                >
+                  <Bell className="h-4 w-4" />
+                  {isHovering && <span>Alerts</span>}
+                </Button>
+              </NavLink>
+            </div>
+          </div>
 
           {/* Theme Toggle */}
           <ThemeToggle isHovering={isHovering} />

@@ -11,17 +11,17 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { 
-  User, 
-  Settings, 
-  CreditCard, 
-  MapPin, 
-  Languages, 
-  Moon, 
-  Sun, 
+import {
+  User,
+  Settings,
+  CreditCard,
+  MapPin,
+  Languages,
+  Moon,
+  Sun,
   Monitor,
   LogOut,
-  Brain
+  Brain,
 } from "lucide-react";
 
 interface ProfileDropdownProps {
@@ -33,11 +33,13 @@ interface ProfileDropdownProps {
   };
 }
 
-export function ProfileDropdown({ user = {
-  name: "User",
-  email: "user@example.com", 
-  plan: "Free"
-} }: ProfileDropdownProps) {
+export function ProfileDropdown({
+  user = {
+    name: "User",
+    email: "user@example.com",
+    plan: "Free",
+  },
+}: ProfileDropdownProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -45,12 +47,20 @@ export function ProfileDropdown({ user = {
           <Avatar className="h-10 w-10">
             <AvatarImage src={user.avatar} alt={user.name} />
             <AvatarFallback className="bg-primary text-primary-foreground">
-              {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+              {user.name
+                .split(" ")
+                .map((n) => n[0])
+                .join("")
+                .toUpperCase()}
             </AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-64 bg-popover border-border" align="end" forceMount>
+      <DropdownMenuContent
+        className="w-64 bg-popover border-border"
+        align="end"
+        forceMount
+      >
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-2">
             <div className="flex items-center gap-2">

@@ -1,6 +1,13 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Copy, ThumbsUp, ThumbsDown, RotateCcw, Volume2 } from "lucide-react";
+import {
+  Copy,
+  ThumbsUp,
+  ThumbsDown,
+  RotateCcw,
+  Volume2,
+  Pause,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
@@ -14,7 +21,8 @@ interface ChatMessageProps {
   onCopy?: (content: string) => void;
   onRegenerate?: (messageId: string) => void;
   onFeedback?: (messageId: string, type: "up" | "down") => void;
-  onSpeak?: (content: string) => void;
+  onSpeak?: (messageId: string, content: string) => void;
+  isPlaying?: boolean;
   draggable?: boolean;
   onDragStart?: (e: React.DragEvent, id: string) => void;
   onDragOver?: (e: React.DragEvent, id: string) => void;
@@ -28,6 +36,7 @@ export function ChatMessage({
   onRegenerate,
   onFeedback,
   onSpeak,
+  isPlaying,
   draggable,
   onDragStart,
   onDragOver,
@@ -69,9 +78,9 @@ export function ChatMessage({
             isUser ? "chat-message-user ml-auto" : "chat-message-assistant"
           )}
         >
-          <p className="text-sm leading-relaxed whitespace-pre-wrap">
-            <ReactMarkdown>{message.content}</ReactMarkdown>
-          </p>
+          {/* <p className="text-sm leading-relaxed whitespace-pre-wrap"> */}
+          <ReactMarkdown>{message.content}</ReactMarkdown>
+          {/* </p> */}
         </div>
 
         <div
@@ -98,10 +107,14 @@ export function ChatMessage({
                 variant="ghost"
                 size="sm"
                 className="h-7 w-7 p-0 hover:bg-[hsl(var(--hover-overlay))]"
-                onClick={() => onSpeak?.(message.content)}
+                onClick={() => onSpeak?.(message.id, message.content)}
                 title={t("chat.readAloud")}
               >
-                <Volume2 className="h-3 w-3" />
+                {isPlaying ? (
+                  <Pause className="h-3 w-3" />
+                ) : (
+                  <Volume2 className="h-3 w-3" />
+                )}
               </Button>
               <Button
                 variant="ghost"

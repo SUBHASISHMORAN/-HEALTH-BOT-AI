@@ -14,7 +14,7 @@
     "gpt4": "GPT-4",
     "latestFirst": "Latest First",
     "location": "Location",
-    "locationOn": "Location On",
+    "locationOn": "",
     "howCanIHelp": "How can I help you today?",
     "welcomeMessage": "I'm your AI assistant. Ask me anything, and I'll do my best to help you with information, creative tasks, analysis, and more.",
     "locationAccess": "Location Access",

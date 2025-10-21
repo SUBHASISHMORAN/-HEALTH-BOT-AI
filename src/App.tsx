@@ -4,6 +4,11 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
+import HealthData from "./pages/HealthData";
+import Overview from "./pages/dashboard/Overview";
+import Analytics from "./pages/dashboard/Analytics";
+import NewsDash from "./pages/dashboard/News";
+import AlertsDash from "./pages/dashboard/Alerts";
 import NotFound from "./pages/NotFound";
 import SidebarLayout from "./components/SidebarLayout";
 import { ChatProvider, useChat } from "./contexts/ChatContext";
@@ -69,6 +74,11 @@ const App = () => {
               <Sonner />
               <Routes>
                 <Route path="/" element={<AppContent />} />
+                <Route path="/health" element={<HealthData />} />
+                <Route path="/dashboard/overview" element={<Overview />} />
+                <Route path="/dashboard/analytics" element={<Analytics />} />
+                <Route path="/dashboard/news" element={<NewsDash />} />
+                <Route path="/dashboard/alerts" element={<AlertsDash />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/verify" element={<OTPVerification />} />
                 <Route path="*" element={<NotFound />} />
