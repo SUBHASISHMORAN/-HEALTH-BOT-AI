@@ -71,3 +71,29 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+
+## Server (WhatsApp/Twilio) setup
+
+This repo contains a minimal `server/` Express app that provides a `/api/whatsapp/send` endpoint. It can be used to send WhatsApp messages via Twilio.
+
+1. Install server dependencies in the repo root (or inside `server/`):
+
+```fish
+npm install express node-fetch dotenv body-parser
+```
+
+2. Create `server/.env` with the following values:
+
+```
+TWILIO_ACCOUNT_SID=your_sid
+TWILIO_AUTH_TOKEN=your_auth_token
+TWILIO_WHATSAPP_FROM=whatsapp:+1415xxxxxxx
+```
+
+3. Start the server:
+
+```fish
+npm run server:start
+```
+
+If Twilio credentials are not provided, the client will fall back to opening WhatsApp Web (wa.me) when sharing.

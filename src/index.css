@@ -5,7 +5,7 @@
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
 All colors MUST be HSL.
 */
-
+ 
 @layer base {
   :root {
     /* Light Mode Colors */
@@ -139,6 +139,22 @@ All colors MUST be HSL.
   }
 }
 
+/* Helper class applied during initial theme application to prevent
+   CSS transitions/animations from causing a flicker (FOUC). */
+.disable-theme-transitions *,
+.disable-theme-transitions *::before,
+.disable-theme-transitions *::after,
+.disable-theme-transitions,
+html.disable-theme-transitions,
+html.disable-theme-transitions *,
+html.disable-theme-transitions *::before,
+html.disable-theme-transitions *::after {
+  transition: none !important;
+  -webkit-transition: none !important;
+  animation: none !important;
+  -webkit-animation: none !important;
+}
+
 @layer components {
   /* Chat Interface Components */
   .chat-sidebar {
@@ -182,15 +198,19 @@ All colors MUST be HSL.
   }
   
   .glass-effect {
-    @apply backdrop-blur-sm bg-white/5 border border-white/10;
+    @apply backdrop-blur-sm;
+    /* Use design tokens so glass effect follows light/dark card colors */
+    background: hsl(var(--card) / 0.05);
+    border: 1px solid hsl(var(--card-foreground) / 0.08);
   }
   
   .hover-glow {
-    @apply transition-all duration-300 hover:shadow-[var(--shadow-glow)];
+    /* only animate shadow/opacity to avoid color/background transitions during theme swap */
+    @apply transition-shadow duration-300 hover:shadow-[var(--shadow-glow)];
   }
   
-  /* Smooth transitions */
+  /* Smooth transitions (only color/opacity) */
   .transition-smooth {
-    @apply transition-all duration-300 ease-out;
+    @apply transition-colors transition-opacity duration-300 ease-out;
   }
 }

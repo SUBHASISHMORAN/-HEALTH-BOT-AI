@@ -15,6 +15,161 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@lovable_dev" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <!-- Critical inline CSS: define minimal theme variables and helper class so the browser
+         can paint the correct background/foreground before the full stylesheet is loaded. -->
+    <style>
+      /* Inline full design tokens (copied from src/index.css) so initial paint uses same tokens */
+      :root {
+        --background: 0 0% 100%;
+        --foreground: 222.2 84% 4.9%;
+
+        --card: 0 0% 100%;
+        --card-foreground: 222.2 84% 4.9%;
+
+        --popover: 0 0% 100%;
+        --popover-foreground: 222.2 84% 4.9%;
+
+        --primary: 263 70% 50%;
+        --primary-foreground: 210 40% 98%;
+        --primary-glow: 263 70% 65%;
+
+        --secondary: 210 40% 96%;
+        --secondary-foreground: 222.2 84% 4.9%;
+
+        --muted: 210 40% 96%;
+        --muted-foreground: 215.4 16.3% 46.9%;
+
+        --accent: 210 40% 96%;
+        --accent-foreground: 222.2 84% 4.9%;
+
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 210 40% 98%;
+
+        --border: 214.3 31.8% 91.4%;
+        --input: 214.3 31.8% 91.4%;
+        --ring: 263 70% 50%;
+
+        --sidebar-bg: 0 0% 98%;
+        --sidebar-border: 214.3 31.8% 91.4%;
+        --chat-bg: 0 0% 100%;
+        --message-user: 263 70% 50%;
+        --message-assistant: 210 40% 96%;
+        --hover-overlay: 222.2 84% 4.9% / 0.05;
+
+        --gradient-primary: linear-gradient(135deg, hsl(263 70% 50%), hsl(263 70% 65%));
+        --gradient-glow: linear-gradient(135deg, hsl(263 70% 50% / 0.2), hsl(263 70% 65% / 0.1));
+        --gradient-sidebar: linear-gradient(180deg, hsl(0 0% 98%), hsl(0 0% 95%));
+
+        --shadow-glow: 0 0 40px hsl(263 70% 50% / 0.3);
+        --shadow-soft: 0 4px 20px hsl(222.2 84% 4.9% / 0.1);
+        --shadow-message: 0 2px 10px hsl(222.2 84% 4.9% / 0.1);
+
+        --radius: 0.75rem;
+
+        --sidebar-background: 0 0% 98%;
+        --sidebar-foreground: 240 5.3% 26.1%;
+        --sidebar-primary: 240 5.9% 10%;
+        --sidebar-primary-foreground: 0 0% 98%;
+        --sidebar-accent: 240 4.8% 95.9%;
+        --sidebar-accent-foreground: 240 5.9% 10%;
+        --sidebar-border: 220 13% 91%;
+        --sidebar-ring: 217.2 91.2% 59.8%;
+      }
+
+      .dark {
+        --background: 220 13% 9%;
+        --foreground: 220 9% 96%;
+
+        --card: 220 13% 11%;
+        --card-foreground: 220 9% 96%;
+
+        --popover: 220 13% 11%;
+        --popover-foreground: 220 9% 96%;
+
+        --primary: 263 70% 50%;
+        --primary-foreground: 220 9% 96%;
+        --primary-glow: 263 70% 65%;
+
+        --secondary: 220 13% 14%;
+        --secondary-foreground: 220 9% 80%;
+
+        --muted: 220 13% 14%;
+        --muted-foreground: 220 9% 65%;
+
+        --accent: 263 70% 50%;
+        --accent-foreground: 220 9% 96%;
+
+        --destructive: 0 63% 31%;
+        --destructive-foreground: 220 9% 96%;
+
+        --border: 220 13% 18%;
+        --input: 220 13% 14%;
+        --ring: 263 70% 50%;
+
+        --sidebar-bg: 220 13% 9%;
+        --sidebar-border: 220 13% 16%;
+        --chat-bg: 220 13% 11%;
+        --message-user: 263 70% 50%;
+        --message-assistant: 220 13% 14%;
+        --hover-overlay: 220 9% 96% / 0.05;
+
+        --gradient-primary: linear-gradient(135deg, hsl(263 70% 50%), hsl(263 70% 65%));
+        --gradient-glow: linear-gradient(135deg, hsl(263 70% 50% / 0.2), hsl(263 70% 65% / 0.1));
+        --gradient-sidebar: linear-gradient(180deg, hsl(220 13% 9%), hsl(220 13% 8%));
+
+        --shadow-glow: 0 0 40px hsl(263 70% 50% / 0.3);
+        --shadow-soft: 0 4px 20px hsl(220 13% 5% / 0.4);
+        --shadow-message: 0 2px 10px hsl(220 13% 5% / 0.2);
+
+        --sidebar-background: 240 5.9% 10%;
+        --sidebar-foreground: 240 4.8% 95.9%;
+        --sidebar-primary: 224.3 76.3% 48%;
+        --sidebar-primary-foreground: 0 0% 100%;
+        --sidebar-accent: 240 3.7% 15.9%;
+        --sidebar-accent-foreground: 240 4.8% 95.9%;
+        --sidebar-border: 240 3.7% 15.9%;
+        --sidebar-ring: 217.2 91.2% 59.8%;
+      }
+
+      html,body{background:hsl(var(--background));color:hsl(var(--foreground));}
+      html.disable-theme-transitions, html.disable-theme-transitions * { transition: none !important; animation: none !important; -webkit-transition: none !important; -webkit-animation: none !important; }
+    </style>
+
+    <!-- Inline script: apply saved/system theme before React mounts to avoid FOUC/flicker -->
+    <script>
+      (function(){
+        try {
+          var root = document.documentElement;
+          var saved = localStorage.getItem('theme');
+          var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var dark;
+          if (saved === 'light') dark = false;
+          else if (saved === 'dark') dark = true;
+          else dark = prefersDark;
+
+          // Temporarily disable transitions while we set the class to avoid flicker
+          // Keep the helper on until the page finishes loading (or at least a short delay)
+          root.classList.add('disable-theme-transitions');
+          if (dark) root.classList.add('dark'); else root.classList.remove('dark');
+
+          function _removeHelper() {
+            // small delay to ensure any layout and style work completes before re-enabling transitions
+            // keep longer than typical CSS durations (300ms) to avoid visible color transition
+            setTimeout(function(){ root.classList.remove('disable-theme-transitions'); }, 350);
+          }
+
+          if (document.readyState === 'complete') {
+            _removeHelper();
+          } else {
+            window.addEventListener('load', _removeHelper, { once: true });
+            // Fallback remove in case load doesn't fire timely
+            setTimeout(_removeHelper, 600);
+          }
+        } catch (e) {
+          /* ignore */
+        }
+      })();
+    </script>
   </head>
 
   <body>

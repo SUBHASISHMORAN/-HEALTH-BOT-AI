@@ -136,26 +136,52 @@ export class SpeechService {
       throw new Error("Speech synthesis is not supported in this browser");
     }
 
-    return new Promise((resolve, reject) => {
+    // Normalize config with sensible defaults in case a partial object was passed
+    const cfg: TTSConfig = {
+      languageCode: config?.languageCode ?? "en-US",
+      voiceName: config?.voiceName,
+      rate: config?.rate ?? 1.0,
+      pitch: config?.pitch ?? 1.0,
+      volume: config?.volume ?? 1.0,
+    };
+
+    return new Promise(async (resolve, reject) => {
       try {
+        // Cancel any pending utterances before speaking new text
         window.speechSynthesis.cancel();
+
+        // Wait for voices to be populated in browsers that load them asynchronously
+        let voices: SpeechSynthesisVoice[] = window.speechSynthesis.getVoices();
+        if (voices.length === 0) {
+          // Wait for the onvoiceschanged event (timeout after 1s)
+          voices = await new Promise<SpeechSynthesisVoice[]>((res) => {
+            const handler = () => {
+              const vs = window.speechSynthesis.getVoices();
+              window.speechSynthesis.removeEventListener("voiceschanged", handler);
+              res(vs);
+            };
+
+            window.speechSynthesis.addEventListener("voiceschanged", handler);
+
+            // fallback timeout
+            setTimeout(() => {
+              window.speechSynthesis.removeEventListener("voiceschanged", handler);
+              res(window.speechSynthesis.getVoices());
+            }, 1000);
+          });
+        }
 
         const utterance = new SpeechSynthesisUtterance(text);
 
-        if (config.voiceName) {
-          const voices = window.speechSynthesis.getVoices();
-          const selectedVoice = voices.find(
-            (voice) => voice.name === config.voiceName
-          );
-          if (selectedVoice) {
-            utterance.voice = selectedVoice;
-          }
+        if (cfg.voiceName) {
+          const selectedVoice = voices.find((voice) => voice.name === cfg.voiceName);
+          if (selectedVoice) utterance.voice = selectedVoice;
         }
 
-        utterance.lang = config.languageCode;
-        utterance.rate = config.rate ?? 1.0;
-        utterance.pitch = config.pitch ?? 1.0;
-        utterance.volume = config.volume ?? 1.0;
+        utterance.lang = cfg.languageCode;
+        utterance.rate = cfg.rate ?? 1.0;
+        utterance.pitch = cfg.pitch ?? 1.0;
+        utterance.volume = cfg.volume ?? 1.0;
 
         utterance.onstart = () => {
           this.isSpeaking = true;
@@ -168,7 +194,7 @@ export class SpeechService {
 
         utterance.onerror = (event) => {
           this.isSpeaking = false;
-          reject(new Error(`Speech synthesis error: ${event.error}`));
+          reject(new Error(`Speech synthesis error: ${event?.error ?? "unknown"}`));
         };
 
         window.speechSynthesis.speak(utterance);
